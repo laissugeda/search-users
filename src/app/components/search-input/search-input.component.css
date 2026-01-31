@@ -1,14 +1,75 @@
-.search-input {
+:host {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-wrapper {
   display: flex;
-  gap: 8px;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+}
+
+.input-group {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  font-size: 0.9rem;
+  color: #a0a0a0;
 }
 
 input {
-  flex: 1;
-  padding: 8px;
+  width: 100%;
+  padding: 12px 12px 12px 45px; /* Espaço para o ícone */
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #ffffff;
+  color: #000000;
+  transition: all 0.2s ease-in-out;
+  outline: none;
 }
 
-button {
-  padding: 8px 16px;
+/* Estado de foco: a borda fica preta */
+input:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-search {
+  padding: 12px 24px;
+  background-color: #000000;
+  color: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+/* Efeito de inversão no Hover */
+.btn-search:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.btn-search:active {
+  transform: scale(0.98);
+}
+
+/* Estilo para quando o botão está desabilitado */
+.btn-search:disabled {
+  background-color: #f0f0f0;
+  border-color: #f0f0f0;
+  color: #a0a0a0;
+  cursor: not-allowed;
 }
