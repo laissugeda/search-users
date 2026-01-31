@@ -1,9 +1,10 @@
-import { Component, inject, signal, OnInit, computed } from '@angular/core'
+import { Component, inject, signal, OnInit, computed, HostListener } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { GitHubService, GitHubUser } from '../../services/github.service'
 import { CacheService } from '../../services/cache.service'
 import { SearchInputComponent } from '../../components/search-input/search-input.component'
 import { UserCardComponent } from '../../components/user-card/user-card.component'
+import { NotificationService } from '../../services/notification.service'
 
 @Component({
   selector: 'app-search-page',
@@ -15,12 +16,23 @@ import { UserCardComponent } from '../../components/user-card/user-card.componen
 export class SearchPageComponent implements OnInit {
   private githubService = inject(GitHubService)
   private cacheService = inject(CacheService)
+  public notification = inject(NotificationService)
 
   users = signal<GitHubUser[]>([])
   loading = signal(false)
   errorMessage = signal<string | null>(null)
   inputValue = signal('')
   history = signal<any[]>([])
+
+  @HostListener('window:offline')
+  onOffline() {
+    this.notification.notify('Você perdeu a conexão com a internet. Ativando modo offline.', true)
+  }
+
+  @HostListener('window:online')
+  onOnline() {
+    this.notification.notify('Conexão restabelecida! Você pode buscar novos dados.')
+  }
 
   ngOnInit() {
     this.loadHistory()
@@ -41,6 +53,11 @@ export class SearchPageComponent implements OnInit {
   }
 
   onSearch(query: string) {
+    if (!navigator.onLine) {
+      this.notification.notify('Não é possível buscar novos dados sem internet.', true)
+      return
+    }
+
     const trimmedQuery = query.trim()
 
     this.inputValue.set(trimmedQuery)

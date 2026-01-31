@@ -25,6 +25,11 @@
       </div>
     }
   </header>
+  @if (notification.message()) {
+    <div class="toast-notification" [class.error]="notification.isError()">
+      {{ notification.message() }}
+    </div>
+  }
 
   @if (errorMessage() && !isInvalidUser()) {
     <div class="error-banner">
