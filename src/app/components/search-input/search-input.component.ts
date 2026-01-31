@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms'
   standalone: true,
   imports: [FormsModule],
   templateUrl: './search-input.component.html',
-  styleUrls: ['./search-input.component.css']
+  styleUrls: ['./search-input.component.css'],
 })
 export class SearchInputComponent {
   @Output() search = new EventEmitter<string>()
@@ -16,5 +16,12 @@ export class SearchInputComponent {
   emitSearch() {
     if (!this.inputValue.trim()) return
     this.search.emit(this.inputValue.trim())
+  }
+
+  onClear(event: any) {
+    if (event.target.value === '') {
+      this.inputValue = ''
+      this.search.emit('')
+    }
   }
 }

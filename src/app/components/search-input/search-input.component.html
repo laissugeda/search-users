@@ -9,6 +9,7 @@
       type="search"
       placeholder="Pesquise um login do GitHub..."
       [(ngModel)]="inputValue"
+      (search)="onClear($event)"
       name="searchQuery"
       aria-describedby="search-hint"
       autocomplete="off"

@@ -58,6 +58,13 @@ export class SearchPageComponent implements OnInit {
   }
 
   onSearch(query: string) {
+    if (!query.trim()) {
+      this.loading.set(false)
+      this.errorMessage.set(null)
+      this.users.set([])
+      this.inputValue.set('')
+      return
+    }
     if (!navigator.onLine) {
       this.notification.notify('Não é possível buscar novos dados sem internet.', true)
       return
