@@ -1,22 +1,25 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { ActivatedRoute, RouterModule } from '@angular/router'
-import { GitHubService, GitHubRepo } from '../../services/github.service'
+import { GitHubService, GitHubRepo, GitHubUser } from '../../services/github.service'
+import { CacheService } from '../../services/cache.service'
 
 @Component({
   selector: 'app-repo-list',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './repo-list.component.html',
-  styleUrls: ['./repo-list.component.css']
+  styleUrls: ['./repo-list.component.css'],
 })
 export class RepoListComponent implements OnInit {
   private route = inject(ActivatedRoute)
   private githubService = inject(GitHubService)
+  private cacheService = inject(CacheService)
 
   username = signal('')
   repos = signal<GitHubRepo[]>([])
   loading = signal(false)
+  user = signal<any>(null)
 
   sortOrder = signal<string>('stars-desc')
   searchTerm = signal<string>('')
@@ -48,21 +51,29 @@ export class RepoListComponent implements OnInit {
   })
 
   ngOnInit() {
-    const userParam = this.route.snapshot.paramMap.get('username')
-    if (userParam) {
-      this.username.set(userParam)
-      this.loadRepos(userParam)
+    const username = this.route.snapshot.paramMap.get('username')
+    if (username) {
+      this.githubService.getUser(username).subscribe((user) => {
+        this.loadRepos(user) // Passamos o objeto usuário completo aqui
+      })
     }
   }
 
-  loadRepos(user: string) {
+  loadRepos(user: GitHubUser) {
     this.loading.set(true)
-    this.githubService.getRepos(user).subscribe({
-      next: (data) => {
-        this.repos.set(data)
+
+    this.githubService.getRepos(user.login).subscribe({
+      next: (repos) => {
+        this.repos.set(repos)
+
+        this.cacheService.saveUser(user, repos)
+
         this.loading.set(false)
       },
-      error: () => this.loading.set(false),
+      error: (err) => {
+        this.loading.set(false)
+        console.error('Erro ao carregar repositórios:', err)
+      },
     })
   }
 }
