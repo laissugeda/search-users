@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { GithubUser } from '../../services/github.service'
+import { GitHubUser } from '../../services/github.service'
 
 @Component({
   selector: 'app-user-card',
@@ -11,5 +11,5 @@ import { GithubUser } from '../../services/github.service'
 })
 export class UserCardComponent {
   // Uso de Signal Inputs (Angular 17.1+)
-  user = input.required<GithubUser>()
+  user = input.required<GitHubUser>()
 }

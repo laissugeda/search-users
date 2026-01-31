@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable, forkJoin, of } from 'rxjs'
 import { map, switchMap } from 'rxjs/operators'
 
-export interface GithubUser {
+export interface GitHubUser {
   login: string
   name: string
   avatar_url: string
@@ -15,11 +15,11 @@ export interface GithubUser {
 }
 
 @Injectable({ providedIn: 'root' })
-export class GithubService {
+export class GitHubService {
   private http = inject(HttpClient)
   private readonly apiUrl = 'https://api.github.com'
 
-  searchUsers(query: string, page: number = 1): Observable<GithubUser[]> {
+  searchUsers(query: string, page: number = 1): Observable<GitHubUser[]> {
     // Adicionei per_page=10 para economizar sua cota de API enquanto testa
     return this.http
       .get<{ items: any[] }>(`${this.apiUrl}/search/users?q=${query}&page=${page}&per_page=10`)

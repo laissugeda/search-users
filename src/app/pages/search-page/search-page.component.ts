@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { GithubService, GithubUser } from '../../services/github.service'
+import { GitHubService, GitHubUser } from '../../services/github.service'
 import { SearchInputComponent } from '../../components/search-input/search-input.component'
 import { UserCardComponent } from '../../components/user-card/user-card.component'
 
@@ -12,10 +12,10 @@ import { UserCardComponent } from '../../components/user-card/user-card.componen
   styleUrls: ['./search-page.component.css'],
 })
 export class SearchPageComponent {
-  private githubService = inject(GithubService)
+  private githubService = inject(GitHubService)
 
   // Usando Signals para estado reativo
-  users = signal<GithubUser[]>([])
+  users = signal<GitHubUser[]>([])
   loading = signal(false)
   errorMessage = signal<string | null>(null)
   inputValue = signal('')
