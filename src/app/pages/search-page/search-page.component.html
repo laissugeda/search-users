@@ -1,0 +1,30 @@
+<section class="page-container">
+  <header class="header">
+    <app-search-input (search)="onSearch($event)"></app-search-input>
+  </header>
+
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Buscando...</p>
+    </div>
+  }
+
+  <div class="cards-grid">
+    @for (userData of users(); track userData.login) {
+      <app-user-card [user]="userData"></app-user-card>
+    } @empty {
+      @if (!loading() && !errorMessage() && inputValue()) {
+        <div class="empty-state">
+          <p>Nenhum usuário encontrado. Tente uma nova busca!</p>
+        </div>
+      }
+    }
+  </div>
+
+  @if (errorMessage()) {
+    <div class="error-banner">
+      {{ errorMessage() }}
+    </div>
+  }
+</section>

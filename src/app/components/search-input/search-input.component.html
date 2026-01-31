@@ -1,0 +1,12 @@
+<div class="search-input">
+  <input
+    type="text"
+    placeholder="Pesquise um login do GitHub"
+    [(ngModel)]="inputValue"
+    (keyup.enter)="emitSearch()"
+  />
+
+  <button (click)="emitSearch()">
+    Buscar
+  </button>
+</div>
