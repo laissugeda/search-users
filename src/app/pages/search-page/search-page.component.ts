@@ -25,6 +25,7 @@ export class SearchPageComponent implements OnInit {
   errorMessage = signal<string | null>(null)
   inputValue = signal('')
   history = signal<any[]>([])
+  userSelectedFromHistory = signal<string>('')
 
   @HostListener('window:offline')
   onOffline() {
@@ -50,6 +51,12 @@ export class SearchPageComponent implements OnInit {
   }
 
   selectFromHistory(item: any) {
+    if (this.userSelectedFromHistory() === item.login) {
+      (document.activeElement as HTMLElement)?.blur()
+      this.clearSearch()
+      return
+    }
+    this.userSelectedFromHistory.set(item.login)
     this.users.set([item])
     this.inputValue.set(item.login)
     this.errorMessage.set(null)
@@ -57,12 +64,17 @@ export class SearchPageComponent implements OnInit {
     this.router.navigate(['/repos', item.login])
   }
 
+  clearSearch() {
+    this.loading.set(false)
+    this.errorMessage.set(null)
+    this.users.set([])
+    this.inputValue.set('')
+    this.userSelectedFromHistory.set('')
+  }
+
   onSearch(query: string) {
     if (!query || !query.trim()) {
-      this.loading.set(false)
-      this.errorMessage.set(null)
-      this.users.set([])
-      this.inputValue.set('')
+      this.clearSearch()
       return
     }
     if (!navigator.onLine) {
