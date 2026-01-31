@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core'
+import { Component, OnInit, inject, signal, computed } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { ActivatedRoute, RouterModule } from '@angular/router'
 import { GitHubService, GitHubRepo } from '../../services/github.service'
@@ -12,14 +12,30 @@ import { GitHubService, GitHubRepo } from '../../services/github.service'
 })
 export class RepoListComponent implements OnInit {
   private route = inject(ActivatedRoute)
-  private GitHubService = inject(GitHubService)
+  private githubService = inject(GitHubService)
 
   username = signal('')
   repos = signal<GitHubRepo[]>([])
   loading = signal(false)
+  
+  sortOrder = signal<string>('stars-desc')
+
+  sortedRepos = computed(() => {
+    const order = this.sortOrder()
+    const list = [...this.repos()]
+
+    return list.sort((a, b) => {
+      switch (order) {
+        case 'stars-desc': return b.stargazers_count - a.stargazers_count
+        case 'stars-asc': return a.stargazers_count - b.stargazers_count
+        case 'name-asc': return a.name.localeCompare(b.name)
+        case 'name-desc': return b.name.localeCompare(a.name)
+        default: return 0
+      }
+    })
+  })
 
   ngOnInit() {
-    // Pega o 'username' da URL
     const userParam = this.route.snapshot.paramMap.get('username')
     if (userParam) {
       this.username.set(userParam)
@@ -29,7 +45,7 @@ export class RepoListComponent implements OnInit {
 
   loadRepos(user: string) {
     this.loading.set(true)
-    this.GitHubService.getRepos(user).subscribe({
+    this.githubService.getRepos(user).subscribe({
       next: (data) => {
         this.repos.set(data)
         this.loading.set(false)

@@ -99,3 +99,39 @@
   border-radius: 12px;
   color: #888;
 }
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.sort-control {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sort-control label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #666;
+}
+
+select {
+  padding: 8px 12px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  background-color: #fff;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+
+select:focus {
+  box-shadow: 4px 4px 0px #000;
+}

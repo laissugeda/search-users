@@ -3,8 +3,28 @@
     <a routerLink="/search" class="btn-back">
       <span>←</span> Voltar para a busca
     </a>
-    <h1>Repositórios de <strong>{{ username() }}</strong></h1>
+    
+    <div class="header-content">
+      <div class="header-info">
+        <h1>Repositórios de <strong>{{ username() }}</strong></h1>
+        @if (!loading() && repos().length > 0) {
+          <span class="repo-count">{{ repos().length }} repositórios encontrados</span>
+        }
+      </div>
+      
+      <div class="sort-control">
+        <label for="sort">Ordenar por</label>
+        <select id="sort" (change)="sortOrder.set($any($event.target).value)">
+          <option value="stars-desc">Estrelas (Maior)</option>
+          <option value="stars-asc">Estrelas (Menor)</option>
+          <option value="name-asc">Nome (A-Z)</option>
+          <option value="name-desc">Nome (Z-A)</option>
+        </select>
+      </div>
+    </div>
   </header>
+
+  <hr class="divider" />
 
   @if (loading()) {
     <div class="loading-state">
@@ -13,25 +33,30 @@
     </div>
   } @else {
     <div class="repo-grid">
-      @for (repo of repos(); track repo.name) {
+      @for (repo of sortedRepos(); track repo.name) {
         <a [href]="repo.html_url" target="_blank" class="repo-card">
           <div class="repo-info">
             <h3>{{ repo.name }}</h3>
-            <p class="repo-description">{{ repo.description || 'Nenhuma descrição fornecida.' }}</p>
+            <p class="repo-description">
+              {{ repo.description || 'Nenhuma descrição fornecida para este repositório.' }}
+            </p>
           </div>
           
           <div class="repo-footer">
-            @if (repo.language) {
-              <span class="language">
-                <span class="dot"></span> {{ repo.language }}
-              </span>
-            }
-            <span class="stars">⭐ {{ repo.stargazers_count }}</span>
+            <div class="meta-info">
+              @if (repo.language) {
+                <span class="language">
+                  <span class="dot"></span> {{ repo.language }}
+                </span>
+              }
+              <span class="stars">⭐ {{ repo.stargazers_count }}</span>
+            </div>
+            <span class="external-link">Ver no GitHub ↗</span>
           </div>
         </a>
       } @empty {
         <div class="empty-state">
-          <p>Este usuário ainda não possui repositórios públicos.</p>
+          <p>Nenhum repositório público encontrado para este usuário.</p>
         </div>
       }
     </div>
