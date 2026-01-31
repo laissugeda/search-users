@@ -1,20 +1,24 @@
-<section class="repo-page">
+<main class="repo-page">
   <header class="repo-header">
-    <a routerLink="/search" class="btn-back"><span>←</span> Voltar para a busca</a>
+    <nav aria-label="Navegação secundária">
+      <a routerLink="/search" class="btn-back"><span>←</span> Voltar para a busca</a>
+    </nav>
 
     <div class="header-content">
       <div class="header-info">
         <h1>
           Repositórios de <strong>{{ username() }}</strong>
         </h1>
-        <span class="repo-count"
-          >{{ sortedRepos().length }} de {{ repos().length }} repositórios</span
-        >
+        <p class="repo-count" aria-live="polite">
+          Exibindo {{ sortedRepos().length }} de {{ repos().length }} repositórios
+        </p>
       </div>
 
       <div class="controls-group">
         <div class="filter-box">
+          <label for="repo-filter" class="sr-only">Filtrar repositórios por nome</label>
           <input
+            id="repo-filter"
             type="text"
             placeholder="Filtrar repositórios..."
             (input)="searchTerm.set($any($event.target).value)"
@@ -22,6 +26,7 @@
         </div>
 
         <div class="sort-control">
+          <label for="sort" class="sr-only">Ordenar repositórios</label>
           <select id="sort" (change)="sortOrder.set($any($event.target).value)">
             <option value="stars-desc">Estrelas (Maior)</option>
             <option value="stars-asc">Estrelas (Menor)</option>
@@ -33,39 +38,61 @@
     </div>
   </header>
 
-  <hr class="divider" />
+  <hr class="divider" aria-hidden="true" />
 
-  @if (loading()) {
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>Buscando repositórios...</p>
-    </div>
-  } @else {
-    <div class="repo-grid">
-      @for (repo of sortedRepos(); track repo.name) {
-        <a [href]="repo.html_url" target="_blank" class="repo-card">
-          <div class="repo-info">
-            <h3>{{ repo.name }}</h3>
-            <p class="repo-description">
-              {{ repo.description || 'Nenhuma descrição fornecida para este repositório.' }}
-            </p>
-          </div>
-          
-          <div class="repo-footer">
-            <div class="meta-info">
-              @if (repo.language) {
-                <span class="language"> <span class="dot"></span> {{ repo.language }} </span>
-              }
-              <span class="stars">⭐ {{ repo.stargazers_count }}</span>
-            </div>
-            <span class="external-link">Ver no GitHub ↗</span>
-          </div>
-        </a>
-      } @empty {
-        <div class="empty-state">
-          <p>Nenhum repositório público encontrado para este usuário.</p>
-        </div>
-      }
-    </div>
+  <div class="feedback-container">
+    @if (loading()) {
+      <output class="loading-state">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Buscando repositórios...</p>
+      </output>
+    }
+  </div>
+
+  @if (!loading()) {
+    <section class="repo-results" aria-label="Lista de repositórios">
+      <ul class="repo-grid">
+        @for (repo of sortedRepos(); track repo.name) {
+          <li class="repo-item">
+            <a 
+              [href]="repo.html_url" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="repo-card"
+              [attr.aria-label]="repo.name + '. Abrir no GitHub'"
+            >
+              <div class="repo-info">
+                <h2>{{ repo.name }}</h2>
+                <p class="repo-description">
+                  {{ repo.description || 'Nenhuma descrição fornecida para este repositório.' }}
+                </p>
+              </div>
+              
+              <div class="repo-footer">
+                <div class="meta-info">
+                  @if (repo.language) {
+                    <span class="language"> 
+                      <span class="dot" aria-hidden="true"></span> 
+                      <span class="sr-only">Linguagem:</span> {{ repo.language }} 
+                    </span>
+                  }
+                  <span class="stars">
+                    <span aria-hidden="true">⭐</span>
+                    <span class="sr-only">Estrelas:</span> {{ repo.stargazers_count }}
+                  </span>
+                </div>
+                <span class="external-link" aria-hidden="true">Ver no GitHub ↗</span>
+              </div>
+            </a>
+          </li>
+        } @empty {
+          <li class="repo-item-empty">
+            <output class="empty-state">
+              <p>Nenhum repositório público encontrado para este usuário.</p>
+            </output>
+          </li>
+        }
+      </ul>
+    </section>
   }
-</section>
+</main>

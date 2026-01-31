@@ -1,44 +1,56 @@
-<article class="user-card">
-  <div class="card-header">
+<article class="user-card" [attr.aria-labelledby]="'user-name-' + user().login">
+  <header class="card-header">
     <img 
       [src]="user().avatar_url" 
-      [alt]="user().login" 
+      alt=""
+      aria-hidden="true"
       class="avatar" 
     />
     <div class="user-info">
-      <h3 class="name">{{ user().name || user().login }}</h3>
-      <span class="username">@{{ user().login }}</span>
+      <h2 class="name" [id]="'user-name-' + user().login">
+        {{ user().name || user().login }}
+      </h2>
+      <p class="username">
+        <span class="sr-only">Nome de usuário: </span>@{{ user().login }}
+      </p>
     </div>
-  </div>
+  </header>
 
   @if (user().bio) {
-    <p class="bio" [title]="user().bio">{{ user().bio }}</p>
+    <p class="bio" [attr.aria-label]="'Biografia: ' + user().bio">
+      {{ user().bio }}
+    </p>
   }
 
   @if (user().location) {
     <div class="location">
-      <span class="icon">📍</span>
-      <span>{{ user().location }}</span>
+      <span class="icon" aria-hidden="true">📍</span>
+      <span><span class="sr-only">Localização: </span>{{ user().location }}</span>
     </div>
   }
 
-  <div class="stats-grid">
-    <div class="stat-item">
+  <ul class="stats-grid">
+    <li class="stat-item">
       <span class="stat-value">{{ user().followers }}</span>
       <span class="stat-label">Seguidores</span>
-    </div>
-    <div class="stat-item">
+    </li>
+    <li class="stat-item">
       <span class="stat-value">{{ user().following }}</span>
       <span class="stat-label">Seguindo</span>
-    </div>
-  </div>
+    </li>
+  </ul>
 
-  <div class="card-actions">
+  <nav class="card-actions" [attr.aria-label]="'Ações para ' + user().login">
     <a [routerLink]="['/user', user().login, 'repos']" class="btn-repos">
-      Ver Repositórios
+      Ver Repositórios <span class="sr-only"> de {{ user().login }}</span>
     </a>
-    <a [href]="'https://github.com/' + user().login" target="_blank" class="view-profile">
-      GitHub Oficial
+    <a 
+      [href]="'https://github.com/' + user().login" 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      class="view-profile"
+    >
+      Perfil Oficial <span class="sr-only">(abre em nova aba)</span>
     </a>
-  </div>
+  </nav>
 </article>

@@ -34,6 +34,19 @@
   text-decoration: underline;
 }
 
+.repo-count {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 2rem 0;
+  width: 100%;
+}
+
 .header-content {
   display: flex;
   justify-content: space-between;
@@ -64,7 +77,7 @@
 .filter-box input,
 select {
   padding: 8px 12px;
-  border: 2px solid #000;
+  border: 2px solid #e0e0e0; /* Cor padrão */
   border-radius: 6px;
   background-color: #fff;
   font-family: inherit;
@@ -77,7 +90,6 @@ select {
 
 .filter-box input {
   width: 250px;
-  border-color: #e0e0e0;
 }
 
 .filter-box input:focus,
@@ -87,12 +99,20 @@ select:focus {
 }
 
 .repo-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.repo-item {
+  display: flex;
 }
 
 .repo-card {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -110,7 +130,7 @@ select:focus {
   transform: translate(-2px, -2px);
 }
 
-.repo-info h3 {
+.repo-info h2 { /* Atualizado para h2 conforme a melhoria de acessibilidade */
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
   color: #000;
@@ -126,9 +146,15 @@ select:focus {
 /* Rodapé do Card */
 .repo-footer {
   display: flex;
-  gap: 20px;
+  justify-content: space-between; /* Melhora a distribuição do link externo */
+  align-items: center;
   font-size: 0.8rem;
   color: #777;
+}
+
+.meta-info {
+  display: flex;
+  gap: 20px;
 }
 
 .language {
@@ -144,10 +170,32 @@ select:focus {
   border-radius: 50%;
 }
 
+.repo-item-empty output {
+  width: 100%;
+}
+.repo-item-empty {
+  grid-column: 1 / -1;
+  width: 100%;
+  list-style: none;
+}
+
 .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 50px;
-  border: 2px dashed #ccc;
+  padding: 60px 20px;
+  border: 2px dashed #e0e0e0;
   border-radius: 12px;
   color: #888;
+  background-color: #fafafa;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
 }

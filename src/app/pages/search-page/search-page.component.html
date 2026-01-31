@@ -1,62 +1,74 @@
 <section class="page-container">
+  <h1 class="sr-only">GitHub Explorer - Busca de Usuários</h1>
+
   <header class="search-section">
-    <app-search-input (search)="onSearch($event)"></app-search-input>
+    <div role="search">
+      <app-search-input (search)="onSearch($event)"></app-search-input>
+    </div>
 
     @if (history().length > 0) {
-      <div class="history-section">
-        <h3>Pesquisas Recentes</h3>
-        <div class="history-list">
+      <nav class="history-section" aria-labelledby="history-label">
+        <h2 id="history-label">Pesquisas Recentes</h2>
+
+        <ol class="history-list">
           @for (item of history(); track item.login) {
-            <button
-              type="button"
-              class="history-item-btn"
-              (click)="selectFromHistory(item)"
-              [title]="'Carregar perfil de ' + item.login"
-            >
-              <img
-                [src]="item.avatar_url"
-                [alt]="'Foto de perfil de ' + item.login"
-                class="history-avatar"
-              />
-              <span>{{ item.login }}</span>
-            </button>
+            <li class="history-item">
+              <button
+                type="button"
+                class="history-item-btn"
+                (click)="selectFromHistory(item)"
+                [attr.aria-label]="'Carregar perfil de ' + item.login"
+                [title]="'Carregar perfil de ' + item.login"
+              >
+                <img [src]="item.avatar_url" alt="" aria-hidden="true" class="history-avatar" />
+                <span>{{ item.login }}</span>
+              </button>
+            </li>
           }
-        </div>
-      </div>
+        </ol>
+      </nav>
     }
   </header>
-  @if (notification.message()) {
-    <div class="toast-notification" [class.error]="notification.isError()">
-      {{ notification.message() }}
-    </div>
-  }
 
-  @if (errorMessage() && !isInvalidUser()) {
-    <div class="error-banner">
-      {{ errorMessage() }}
-    </div>
-  }
+  <div class="feedback-container">
+    @if (notification.message()) {
+      <output class="toast-notification" [class.error]="notification.isError()">
+        {{ notification.message() }}
+      </output>
+    }
 
-  @if (loading()) {
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>Buscando...</p>
-    </div>
-  }
+    @if (errorMessage() && !isInvalidUser()) {
+      <output class="error-banner">
+        {{ errorMessage() }}
+      </output>
+    }
 
-  <div class="cards-grid">
-    @for (userData of users(); track userData.login) {
-      <app-user-card [user]="userData"></app-user-card>
-    } @empty {
-      @if (isInvalidUser()) {
-        <div class="empty-state">
-          <p>Usuário inválido. Por favor, verifique o nome e tente novamente.</p>
-        </div>
-      } @else if (showEmptyState()) {
-        <div class="empty-state">
-          <p>Nenhum usuário encontrado. Tente uma nova busca!</p>
-        </div>
-      }
+    @if (loading()) {
+      <output class="loading-state">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Buscando usuários...</p>
+      </output>
     }
   </div>
+
+  <main class="results-section">
+    <h2 class="sr-only">Resultados da pesquisa</h2>
+
+    <div class="cards-grid">
+      @for (userData of users(); track userData.login) {
+        <app-user-card [user]="userData"></app-user-card>
+      } @empty {
+        <output class="empty-state">
+          @if (isInvalidUser()) {
+            <p>Usuário inválido. Por favor, verifique o nome e tente novamente.</p>
+          } @else if (showEmptyState()) {
+            <p>
+              Nenhum usuário encontrado para "<strong>{{ inputValue() }}</strong
+              >". Tente uma nova busca!
+            </p>
+          }
+        </output>
+      }
+    </div>
+  </main>
 </section>

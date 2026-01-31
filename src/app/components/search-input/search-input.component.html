@@ -1,14 +1,30 @@
-<div class="search-wrapper">
+<form (submit)="emitSearch(); $event.preventDefault()" class="search-wrapper" role="search">
   <div class="input-group">
-    <span class="search-icon">🔍</span>
+    <label for="github-search" class="sr-only">Nome de usuário do GitHub</label>
+    
+    <span class="search-icon" aria-hidden="true">🔍</span>
+    
     <input
-      type="text"
+      id="github-search"
+      type="search"
       placeholder="Pesquise um login do GitHub..."
       [(ngModel)]="inputValue"
-      (keyup.enter)="emitSearch()"
+      name="searchQuery"
+      aria-describedby="search-hint"
+      autocomplete="off"
+      spellcheck="false"
     />
   </div>
-  <button class="btn-search" (click)="emitSearch()">
+
+  <button 
+    type="submit" 
+    class="btn-search" 
+    [attr.aria-label]="'Buscar usuário ' + inputValue"
+  >
     Buscar
   </button>
-</div>
+
+  <span id="search-hint" class="sr-only">
+    Digite o nome de usuário e pressione Enter para buscar perfis e repositórios.
+  </span>
+</form>
