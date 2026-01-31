@@ -1,0 +1,39 @@
+<section class="repo-page">
+  <header class="repo-header">
+    <a routerLink="/search" class="btn-back">
+      <span>←</span> Voltar para a busca
+    </a>
+    <h1>Repositórios de <strong>{{ username() }}</strong></h1>
+  </header>
+
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Buscando repositórios...</p>
+    </div>
+  } @else {
+    <div class="repo-grid">
+      @for (repo of repos(); track repo.name) {
+        <a [href]="repo.html_url" target="_blank" class="repo-card">
+          <div class="repo-info">
+            <h3>{{ repo.name }}</h3>
+            <p class="repo-description">{{ repo.description || 'Nenhuma descrição fornecida.' }}</p>
+          </div>
+          
+          <div class="repo-footer">
+            @if (repo.language) {
+              <span class="language">
+                <span class="dot"></span> {{ repo.language }}
+              </span>
+            }
+            <span class="stars">⭐ {{ repo.stargazers_count }}</span>
+          </div>
+        </a>
+      } @empty {
+        <div class="empty-state">
+          <p>Este usuário ainda não possui repositórios públicos.</p>
+        </div>
+      }
+    </div>
+  }
+</section>

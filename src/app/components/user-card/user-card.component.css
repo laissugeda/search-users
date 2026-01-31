@@ -5,23 +5,22 @@
 
 .user-card {
   background-color: #ffffff;
-  border: 1px solid #d0d7de;
+  border: 1px solid #000000;
   border-radius: 8px;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   height: 100%;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-family: inherit;
 }
 
 .user-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
-  border-color: #0969da;
+  transform: translate(-4px, -4px);
+  box-shadow: 6px 6px 0px #000000;
 }
 
-/* Cabeçalho do Card */
+/* Cabeçalho */
 .card-header {
   display: flex;
   align-items: center;
@@ -30,39 +29,32 @@
 }
 
 .avatar {
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #f0f2f4;
+  border: 2px solid #000;
 }
 
 .user-info .name {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2328;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 180px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #000;
 }
 
 .user-info .username {
   font-size: 0.9rem;
-  color: #636c76;
-  display: block;
+  color: #666;
 }
 
-/* Conteúdo central: Bio e Localização */
+/* Conteúdo */
 .bio {
   font-size: 0.9rem;
-  color: #1f2328;
+  color: #333;
   margin: 0 0 1rem 0;
   line-height: 1.5;
-  flex-grow: 1; /* Faz a bio ocupar o espaço disponível e empurrar o resto para baixo */
-  
-  /* Limitação de 3 linhas com reticências */
+  flex-grow: 1;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -74,61 +66,79 @@
   align-items: center;
   gap: 0.4rem;
   font-size: 0.85rem;
-  color: #636c76;
+  color: #666;
   margin-bottom: 1rem;
 }
 
-/* Grid de Estatísticas */
+/* Stats simplificados (sem estrelas) */
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
+  display: flex;
+  gap: 20px;
   padding: 1rem 0;
-  border-top: 1px solid #d0d7de;
-  margin-top: auto; /* Garante que os stats fiquem sempre no rodapé do card */
+  border-top: 1px solid #eee;
+  margin-top: auto;
 }
 
 .stat-item {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
 }
 
 .stat-value {
-  font-weight: 600;
+  font-weight: 800;
   font-size: 1rem;
-  color: #1f2328;
 }
 
 .stat-label {
-  font-size: 0.75rem;
-  color: #636c76;
-  text-transform: lowercase;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #888;
 }
 
-.highlight .stat-value {
-  color: #9a6700; /* Cor de "estrela" dourada */
+/* Container de Botões */
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 1rem;
 }
 
-/* Botão de Ação */
+/* Botão Principal: Ver Repositórios */
+.btn-repos {
+  display: block;
+  text-align: center;
+  background-color: #000;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 10px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.btn-repos:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Botão Secundário: GitHub Oficial */
 .view-profile {
   display: block;
   text-align: center;
-  background-color: #f6f8fa;
-  color: #24292f;
+  background-color: #fff;
+  color: #000;
   text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.5rem;
-  border: 1px solid #d0d7de;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  margin-top: 1rem;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .view-profile:hover {
-  background-color: #0969da;
-  color: #ffffff;
-  border-color: #0969da;
+  border-color: #000;
+  background-color: #f9f9f9;
 }

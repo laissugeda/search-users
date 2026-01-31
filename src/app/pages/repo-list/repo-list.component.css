@@ -1,0 +1,101 @@
+.repo-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.repo-header {
+  margin-bottom: 2rem;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+
+.btn-back:hover {
+  color: #000;
+}
+
+.repo-header h1 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #000;
+}
+
+.repo-header h1 strong {
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+/* Grid de Repositórios */
+.repo-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Lista vertical para repositórios fica mais elegante */
+  gap: 16px;
+}
+
+.repo-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.repo-card:hover {
+  border-color: #000;
+  box-shadow: 4px 4px 0px #000; /* Sombra sólida neo-brutalista */
+  transform: translate(-2px, -2px);
+}
+
+.repo-info h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #000;
+}
+
+.repo-description {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+/* Rodapé do card de repo */
+.repo-footer {
+  display: flex;
+  gap: 20px;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.language {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+  border-radius: 50%;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  color: #888;
+}

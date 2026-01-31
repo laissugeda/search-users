@@ -9,9 +9,16 @@ export interface GitHubUser {
   avatar_url: string
   followers: number
   following: number
-  starredCount: number
   location: string | null
   bio: string | null
+}
+
+export interface GitHubRepo {
+  name: string
+  description: string
+  html_url: string
+  stargazers_count: number
+  language: string
 }
 
 @Injectable({ providedIn: 'root' })
@@ -29,10 +36,9 @@ export class GitHubService {
 
           const detailedRequests = response.items.map((user) => {
             const profile$ = this.http.get<any>(`${this.apiUrl}/users/${user.login}`)
-            const starred$ = this.http.get<any[]>(`${this.apiUrl}/users/${user.login}/starred`)
 
-            return forkJoin([profile$, starred$]).pipe(
-              map(([profile, starred]) => ({
+            return forkJoin([profile$]).pipe(
+              map(([profile]) => ({
                 login: profile.login,
                 name: profile.name || profile.login,
                 avatar_url: profile.avatar_url,
@@ -40,7 +46,6 @@ export class GitHubService {
                 following: profile.following,
                 location: profile.location,
                 bio: profile.bio,
-                starredCount: starred.length,
               })),
             )
           })
@@ -48,5 +53,8 @@ export class GitHubService {
           return forkJoin(detailedRequests)
         }),
       )
+  }
+  getRepos(username: string): Observable<GitHubRepo[]> {
+    return this.http.get<GitHubRepo[]>(`${this.apiUrl}/users/${username}/repos?sort=updated`)
   }
 }

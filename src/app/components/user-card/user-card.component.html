@@ -1,6 +1,10 @@
 <article class="user-card">
   <div class="card-header">
-    <img [src]="user().avatar_url" [alt]="user().login" class="avatar" />
+    <img 
+      [src]="user().avatar_url" 
+      [alt]="user().login" 
+      class="avatar" 
+    />
     <div class="user-info">
       <h3 class="name">{{ user().name || user().login }}</h3>
       <span class="username">@{{ user().login }}</span>
@@ -21,19 +25,20 @@
   <div class="stats-grid">
     <div class="stat-item">
       <span class="stat-value">{{ user().followers }}</span>
-      <span class="stat-label">Followers</span>
+      <span class="stat-label">Seguidores</span>
     </div>
     <div class="stat-item">
       <span class="stat-value">{{ user().following }}</span>
-      <span class="stat-label">Following</span>
-    </div>
-    <div class="stat-item highlight">
-      <span class="stat-value">⭐ {{ user().starredCount }}</span>
-      <span class="stat-label">Stars</span>
+      <span class="stat-label">Seguindo</span>
     </div>
   </div>
 
-  <a [href]="'https://github.com/' + user().login" target="_blank" class="view-profile">
-    View Profile
-  </a>
+  <div class="card-actions">
+    <a [routerLink]="['/user', user().login, 'repos']" class="btn-repos">
+      Ver Repositórios
+    </a>
+    <a [href]="'https://github.com/' + user().login" target="_blank" class="view-profile">
+      GitHub Oficial
+    </a>
+  </div>
 </article>

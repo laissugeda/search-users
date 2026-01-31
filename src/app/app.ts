@@ -1,13 +1,13 @@
 import { Component } from '@angular/core'
-import { HttpClientModule } from '@angular/common/http'
-
-import { SearchPageComponent } from './pages/search-page/search-page.component'
+import { RouterOutlet } from '@angular/router'
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HttpClientModule, SearchPageComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrls: ['./app.css']
+  styleUrls: ['./app.css'],
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'github-user-researcher'
+}
