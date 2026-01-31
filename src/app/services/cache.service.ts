@@ -32,7 +32,32 @@ export class CacheService {
       timestamp: Date.now(),
     })
 
-    tx.oncomplete = () => db.close()
+    return new Promise<void>((resolve, reject) => {
+      tx.oncomplete = () => {
+        db.close()
+        resolve()
+      }
+      tx.onerror = () => reject(tx.error)
+    })
+  }
+
+  async getUser(login: string): Promise<any | null> {
+    const db = await this.openDB()
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(this.storeName, 'readonly')
+      const store = tx.objectStore(this.storeName)
+      const request = store.get(login)
+
+      request.onsuccess = () => {
+        resolve(request.result || null)
+        db.close()
+      }
+
+      request.onerror = () => {
+        reject(request.error)
+        db.close()
+      }
+    })
   }
 
   async getHistory(): Promise<any[]> {
@@ -43,7 +68,7 @@ export class CacheService {
       const request = store.getAll()
 
       request.onsuccess = () => {
-        const result = request.result.sort((a, b) => b.timestamp - a.timestamp)
+        const result = (request.result || []).sort((a, b) => b.timestamp - a.timestamp)
         resolve(result)
         db.close()
       }

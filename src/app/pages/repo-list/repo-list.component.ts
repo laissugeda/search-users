@@ -52,37 +52,50 @@ export class RepoListComponent implements OnInit {
     })
   })
 
-  ngOnInit() {
+  async ngOnInit() {
     const userFromUrl = this.route.snapshot.paramMap.get('username')
 
     if (userFromUrl) {
       this.username.set(userFromUrl)
 
-      this.githubService.getUser(userFromUrl).subscribe({
-        next: (user) => {
-          this.loadRepos(user)
-        },
-        error: () => {
-          this.notification.notify('Não foi possível carregar os dados do usuário.', true)
-        },
-      })
+      const cachedData = await this.cacheService.getUser(userFromUrl)
+
+      if (cachedData) {
+        this.user.set(cachedData)
+        this.repos.set(cachedData.cachedRepos || [])
+        this.updateDataFromNetwork(userFromUrl)
+      } else {
+        this.loading.set(true)
+        this.updateDataFromNetwork(userFromUrl)
+      }
     }
   }
 
-  loadRepos(user: GitHubUser) {
-    this.loading.set(true)
+  private updateDataFromNetwork(username: string) {
+    this.githubService.getUser(username).subscribe({
+      next: (user) => {
+        this.user.set(user)
+        this.loadRepos(user)
+      },
+      error: () => {
+        this.loading.set(false)
+        if (!this.repos().length) {
+          this.notification.notify('Não foi possível conectar ao GitHub.', true)
+        }
+      },
+    })
+  }
 
+  loadRepos(user: GitHubUser) {
     this.githubService.getRepos(user.login).subscribe({
       next: (repos) => {
         this.repos.set(repos)
-
         this.cacheService.saveUser(user, repos)
-
         this.loading.set(false)
       },
       error: (err) => {
         this.loading.set(false)
-        console.error('Erro ao carregar repositórios:', err)
+        console.error('Falha na atualização de repositórios:', err)
       },
     })
   }
