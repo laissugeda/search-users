@@ -11,6 +11,5 @@ import { RouterModule } from '@angular/router'
   styleUrls: ['./user-card.component.css']
 })
 export class UserCardComponent {
-  // Uso de Signal Inputs (Angular 17.1+)
   user = input.required<GitHubUser>()
 }

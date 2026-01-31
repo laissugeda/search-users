@@ -54,7 +54,7 @@ export class RepoListComponent implements OnInit {
     const username = this.route.snapshot.paramMap.get('username')
     if (username) {
       this.githubService.getUser(username).subscribe((user) => {
-        this.loadRepos(user) // Passamos o objeto usuário completo aqui
+        this.loadRepos(user)
       })
     }
   }
