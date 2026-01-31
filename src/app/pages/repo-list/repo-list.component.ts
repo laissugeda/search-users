@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common'
 import { ActivatedRoute, RouterModule } from '@angular/router'
 import { GitHubService, GitHubRepo, GitHubUser } from '../../services/github.service'
 import { CacheService } from '../../services/cache.service'
+import { NotificationService } from '../../services/notification.service'
 
 @Component({
   selector: 'app-repo-list',
@@ -15,6 +16,7 @@ export class RepoListComponent implements OnInit {
   private route = inject(ActivatedRoute)
   private githubService = inject(GitHubService)
   private cacheService = inject(CacheService)
+  public notification = inject(NotificationService)
 
   username = signal('')
   repos = signal<GitHubRepo[]>([])
@@ -51,10 +53,18 @@ export class RepoListComponent implements OnInit {
   })
 
   ngOnInit() {
-    const username = this.route.snapshot.paramMap.get('username')
-    if (username) {
-      this.githubService.getUser(username).subscribe((user) => {
-        this.loadRepos(user)
+    const userFromUrl = this.route.snapshot.paramMap.get('username')
+
+    if (userFromUrl) {
+      this.username.set(userFromUrl)
+
+      this.githubService.getUser(userFromUrl).subscribe({
+        next: (user) => {
+          this.loadRepos(user)
+        },
+        error: () => {
+          this.notification.notify('Não foi possível carregar os dados do usuário.', true)
+        },
       })
     }
   }
