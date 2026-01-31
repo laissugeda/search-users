@@ -1,7 +1,36 @@
 <section class="page-container">
-  <header class="header">
+  <header class="search-section">
     <app-search-input (search)="onSearch($event)"></app-search-input>
+
+    @if (history().length > 0) {
+      <div class="history-section">
+        <h3>Pesquisas Recentes</h3>
+        <div class="history-list">
+          @for (item of history(); track item.login) {
+            <button
+              type="button"
+              class="history-item-btn"
+              (click)="selectFromHistory(item)"
+              [title]="'Carregar perfil de ' + item.login"
+            >
+              <img
+                [src]="item.avatar_url"
+                [alt]="'Foto de perfil de ' + item.login"
+                class="history-avatar"
+              />
+              <span>{{ item.login }}</span>
+            </button>
+          }
+        </div>
+      </div>
+    }
   </header>
+
+  @if (errorMessage()) {
+    <div class="error-banner">
+      {{ errorMessage() }}
+    </div>
+  }
 
   @if (loading()) {
     <div class="loading-state">
@@ -21,10 +50,4 @@
       }
     }
   </div>
-
-  @if (errorMessage()) {
-    <div class="error-banner">
-      {{ errorMessage() }}
-    </div>
-  }
 </section>

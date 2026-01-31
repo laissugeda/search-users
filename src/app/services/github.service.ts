@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { Observable, forkJoin, of } from 'rxjs'
+import { Observable, forkJoin, of, tap } from 'rxjs'
 import { map, switchMap } from 'rxjs/operators'
+import { CacheService } from './cache.service'
 
 export interface GitHubUser {
   login: string
@@ -25,6 +26,7 @@ export interface GitHubRepo {
 export class GitHubService {
   private http = inject(HttpClient)
   private readonly apiUrl = 'https://api.github.com'
+  private cache = inject(CacheService)
 
   searchUsers(query: string, page: number = 1): Observable<GitHubUser[]> {
     // Adicionei per_page=10 para economizar sua cota de API enquanto testa
@@ -56,5 +58,15 @@ export class GitHubService {
   }
   getRepos(username: string): Observable<GitHubRepo[]> {
     return this.http.get<GitHubRepo[]>(`${this.apiUrl}/users/${username}/repos?sort=updated`)
+  }
+
+  getUser(username: string) {
+    return this.http.get<GitHubUser>(`${this.apiUrl}/users/${username}`).pipe(
+      tap((user) => {
+        this.getRepos(username).subscribe((repos) => {
+          this.cache.saveUser(user, repos)
+        })
+      }),
+    )
   }
 }
