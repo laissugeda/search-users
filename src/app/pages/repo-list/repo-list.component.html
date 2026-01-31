@@ -1,25 +1,34 @@
 <section class="repo-page">
   <header class="repo-header">
-    <a routerLink="/search" class="btn-back">
-      <span>←</span> Voltar para a busca
-    </a>
-    
+    <a routerLink="/search" class="btn-back"><span>←</span> Voltar para a busca</a>
+
     <div class="header-content">
       <div class="header-info">
-        <h1>Repositórios de <strong>{{ username() }}</strong></h1>
-        @if (!loading() && repos().length > 0) {
-          <span class="repo-count">{{ repos().length }} repositórios encontrados</span>
-        }
+        <h1>
+          Repositórios de <strong>{{ username() }}</strong>
+        </h1>
+        <span class="repo-count"
+          >{{ sortedRepos().length }} de {{ repos().length }} repositórios</span
+        >
       </div>
-      
-      <div class="sort-control">
-        <label for="sort">Ordenar por</label>
-        <select id="sort" (change)="sortOrder.set($any($event.target).value)">
-          <option value="stars-desc">Estrelas (Maior)</option>
-          <option value="stars-asc">Estrelas (Menor)</option>
-          <option value="name-asc">Nome (A-Z)</option>
-          <option value="name-desc">Nome (Z-A)</option>
-        </select>
+
+      <div class="controls-group">
+        <div class="filter-box">
+          <input
+            type="text"
+            placeholder="Filtrar repositórios..."
+            (input)="searchTerm.set($any($event.target).value)"
+          />
+        </div>
+
+        <div class="sort-control">
+          <select id="sort" (change)="sortOrder.set($any($event.target).value)">
+            <option value="stars-desc">Estrelas (Maior)</option>
+            <option value="stars-asc">Estrelas (Menor)</option>
+            <option value="name-asc">Nome (A-Z)</option>
+            <option value="name-desc">Nome (Z-A)</option>
+          </select>
+        </div>
       </div>
     </div>
   </header>
@@ -45,9 +54,7 @@
           <div class="repo-footer">
             <div class="meta-info">
               @if (repo.language) {
-                <span class="language">
-                  <span class="dot"></span> {{ repo.language }}
-                </span>
+                <span class="language"> <span class="dot"></span> {{ repo.language }} </span>
               }
               <span class="stars">⭐ {{ repo.stargazers_count }}</span>
             </div>

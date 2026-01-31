@@ -17,20 +17,32 @@ export class RepoListComponent implements OnInit {
   username = signal('')
   repos = signal<GitHubRepo[]>([])
   loading = signal(false)
-  
+
   sortOrder = signal<string>('stars-desc')
+  searchTerm = signal<string>('')
 
   sortedRepos = computed(() => {
+    const term = this.searchTerm().toLowerCase()
     const order = this.sortOrder()
-    const list = [...this.repos()]
+
+    let list = this.repos().filter(
+      (repo) =>
+        repo.name.toLowerCase().includes(term) ||
+        (repo.description && repo.description.toLowerCase().includes(term)),
+    )
 
     return list.sort((a, b) => {
       switch (order) {
-        case 'stars-desc': return b.stargazers_count - a.stargazers_count
-        case 'stars-asc': return a.stargazers_count - b.stargazers_count
-        case 'name-asc': return a.name.localeCompare(b.name)
-        case 'name-desc': return b.name.localeCompare(a.name)
-        default: return 0
+        case 'stars-desc':
+          return b.stargazers_count - a.stargazers_count
+        case 'stars-asc':
+          return a.stargazers_count - b.stargazers_count
+        case 'name-asc':
+          return a.name.localeCompare(b.name)
+        case 'name-desc':
+          return b.name.localeCompare(a.name)
+        default:
+          return 0
       }
     })
   })
@@ -50,7 +62,7 @@ export class RepoListComponent implements OnInit {
         this.repos.set(data)
         this.loading.set(false)
       },
-      error: () => this.loading.set(false)
+      error: () => this.loading.set(false),
     })
   }
 }
