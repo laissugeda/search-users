@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core'
+import { Component, inject, signal, OnInit, computed } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { GitHubService, GitHubUser } from '../../services/github.service'
 import { CacheService } from '../../services/cache.service'
@@ -41,12 +41,19 @@ export class SearchPageComponent implements OnInit {
   }
 
   onSearch(query: string) {
-    if (!query.trim()) return
+    const trimmedQuery = query.trim()
+
+    this.inputValue.set(trimmedQuery)
+
+    if (!trimmedQuery) {
+      this.users.set([])
+      return
+    }
 
     this.loading.set(true)
     this.errorMessage.set(null)
 
-    this.githubService.searchUsers(query).subscribe({
+    this.githubService.searchUsers(trimmedQuery).subscribe({
       next: (data) => {
         this.users.set(data)
         this.loading.set(false)
@@ -73,4 +80,13 @@ export class SearchPageComponent implements OnInit {
       },
     })
   }
+
+  showEmptyState = computed(() => {
+    return (
+      !this.loading() &&
+      !this.errorMessage() &&
+      this.users().length === 0 &&
+      this.inputValue().trim().length > 0
+    )
+  })
 }

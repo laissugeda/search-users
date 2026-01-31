@@ -43,7 +43,7 @@
     @for (userData of users(); track userData.login) {
       <app-user-card [user]="userData"></app-user-card>
     } @empty {
-      @if (!loading() && !errorMessage() && inputValue()) {
+      @if (showEmptyState()) {
         <div class="empty-state">
           <p>Nenhum usuário encontrado. Tente uma nova busca!</p>
         </div>
