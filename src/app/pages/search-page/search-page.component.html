@@ -26,7 +26,7 @@
     }
   </header>
 
-  @if (errorMessage()) {
+  @if (errorMessage() && !isInvalidUser()) {
     <div class="error-banner">
       {{ errorMessage() }}
     </div>
@@ -43,7 +43,11 @@
     @for (userData of users(); track userData.login) {
       <app-user-card [user]="userData"></app-user-card>
     } @empty {
-      @if (showEmptyState()) {
+      @if (isInvalidUser()) {
+        <div class="empty-state">
+          <p>Usuário inválido. Por favor, verifique o nome e tente novamente.</p>
+        </div>
+      } @else if (showEmptyState()) {
         <div class="empty-state">
           <p>Nenhum usuário encontrado. Tente uma nova busca!</p>
         </div>

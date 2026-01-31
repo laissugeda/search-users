@@ -89,4 +89,18 @@ export class SearchPageComponent implements OnInit {
       this.inputValue().trim().length > 0
     )
   })
+
+  isInvalidUser = computed(() => {
+    const username = this.inputValue().trim()
+    if (username.length === 0) return false
+
+    // Regras do GitHub:
+    // ^[a-z\d] -> Começa com alfanumérico
+    // (?:[a-z\d]|-(?=[a-z\d])){0,38} -> Seguido por hifens (não consecutivos) ou alfanuméricos
+    // $ -> Termina com alfanumérico (implícito na regra acima)
+    // Case insensitive (i)
+    const githubUsernameRegex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i
+
+    return !githubUsernameRegex.test(username)
+  })
 }
