@@ -29,9 +29,8 @@ export class GitHubService {
   private cache = inject(CacheService)
 
   searchUsers(query: string, page: number = 1): Observable<GitHubUser[]> {
-    // Adicionei per_page=10 para economizar sua cota de API enquanto testa
     return this.http
-      .get<{ items: any[] }>(`${this.apiUrl}/search/users?q=${query}&page=${page}&per_page=10`)
+      .get<{ items: any[] }>(`${this.apiUrl}/search/users?q=${query}&page=${page}`)
       .pipe(
         switchMap((response) => {
           if (!response.items || response.items.length === 0) return of([])
