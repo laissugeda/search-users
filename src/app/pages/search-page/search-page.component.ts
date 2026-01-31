@@ -58,7 +58,7 @@ export class SearchPageComponent implements OnInit {
   }
 
   onSearch(query: string) {
-    if (!query.trim()) {
+    if (!query || !query.trim()) {
       this.loading.set(false)
       this.errorMessage.set(null)
       this.users.set([])
