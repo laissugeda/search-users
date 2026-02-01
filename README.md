@@ -1,59 +1,87 @@
-# SearchUsers
+# 🔍 GitHub Search Explorer
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+Este projeto é uma aplicação moderna desenvolvida em **Angular 21** para busca de usuários e repositórios do GitHub.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🛠️ Tecnologias Principais
 
-```bash
-ng serve
-```
+* **Framework:** Angular 21
+* **Testes Unitários:** Vitest + JSDOM (executados via Angular CLI)
+* **Testes E2E:** Cypress
+* **Persistência:** Cache local via IndexedDB para otimizar requisições à API.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🚀 Como Executar o Projeto Localmente
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Siga os passos abaixo para preparar o ambiente:
 
-```bash
-ng generate component component-name
-```
+### 1. Pré-requisitos
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Certifique-se de ter instalado:
 
-```bash
-ng generate --help
-```
+* **Node.js:** Versão 20 ou superior.
+* **NPM:** Versão 11 ou superior.
 
-## Building
-
-To build the project run:
+### 2. Instalação
 
 ```bash
-ng build
+npm install
+
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### 3. Rodar a aplicação
 
 ```bash
-ng test
+ng s
+
 ```
 
-## Running end-to-end tests
+Acesse: [http://localhost:4200]
 
-For end-to-end (e2e) testing, run:
+---
 
-```bash
-ng e2e
-```
+## 🧪 Suíte de Testes e Resultados
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Implementamos uma estratégia de testes para garantir a estabilidade das funcionalidades principais.
 
-## Additional Resources
+### 1. Testes Unitários
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Focam na lógica dos serviços e componentes de forma isolada, garantindo que o comportamento interno (como o tratamento de dados do GitHub) esteja correto.
+
+* **Comando:** `ng test`
+* **Onde ficam os resultados:** Os resultados são exibidos diretamente no terminal. O comando executa os specs utilizando o motor do Vitest configurado no ambiente Angular.
+
+### 2. Testes End-to-End (Cypress)
+
+Simulam a jornada real do usuário: digitar um login, clicar em buscar, validar o card e navegar até a lista de repositórios.
+
+* **Comando para interface visual:** `npx cypress open`
+* **Onde ficam os resultados:** Os resultados são visualizados em tempo real na interface gráfica do Cypress, onde é possível acompanhar cada passo da interação com o navegador.
+
+---
+
+## 🐞 Instruções para Debugging
+
+Caso precise investigar o comportamento da aplicação:
+
+### Debug da Interface e Cache
+
+1. Abra o **DevTools** do navegador (`F12`).
+2. Na aba **Application** > **Storage** > **IndexedDB**, você pode visualizar os dados salvos pelo `CacheService`. Isso ajuda a validar se a aplicação está recuperando dados do banco local antes de consultar a API externa.
+
+### Debug de Testes
+
+* **Testes Unitários:** O comando `ng test` roda em modo contínuo. Qualquer alteração no código reinicia os testes automaticamente, facilitando o rastreio de quebras.
+* **Cypress:** Ao rodar com `npx cypress open`, você pode usar o "Time Travel" (disponível no Test Body) da ferramenta para clicar em cada etapa do teste e ver o estado exato da tela naquele momento.
+
+---
+
+## 📁 Estrutura do Projeto
+
+* `src/app/services`: Lógica de API (`GitHubService`) e persistência (`CacheService`).
+* `src/app/pages`: Componentes de página (Busca e Listagem).
+* `src/app/components`: Componentes de interface reutilizáveis.
+* `cypress/e2e`: Cenários de teste de ponta a ponta.
+
