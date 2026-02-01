@@ -38,7 +38,7 @@ ng s
 
 ```
 
-Acesse: [http://localhost:4200]
+Acesse: [http://localhost:4200](http://localhost:4200)
 
 ---
 
