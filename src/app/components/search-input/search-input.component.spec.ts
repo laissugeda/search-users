@@ -23,7 +23,6 @@ describe('SearchInputComponent', () => {
   it('deve emitir o valor de busca ao clicar no botão', () => {
     let emittedValue = ''
 
-    // Em vez de spyOn, assinamos o evento manualmente
     component.search.subscribe((val: string) => {
       emittedValue = val
     })
@@ -34,7 +33,6 @@ describe('SearchInputComponent', () => {
     const button = fixture.nativeElement.querySelector('button')
     button.click()
 
-    // Verificamos se a nossa variável local foi preenchida
     expect(emittedValue).toBe('angular')
   })
 

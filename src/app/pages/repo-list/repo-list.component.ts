@@ -63,11 +63,11 @@ export class RepoListComponent implements OnInit {
       if (cachedData) {
         this.user.set(cachedData)
         this.repos.set(cachedData.cachedRepos || [])
-        this.updateDataFromNetwork(userFromUrl)
       } else {
         this.loading.set(true)
-        this.updateDataFromNetwork(userFromUrl)
       }
+      
+      this.updateDataFromNetwork(userFromUrl)
     }
   }
 

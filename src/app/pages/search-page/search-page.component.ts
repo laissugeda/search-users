@@ -5,7 +5,6 @@ import { CacheService } from '../../services/cache.service'
 import { SearchInputComponent } from '../../components/search-input/search-input.component'
 import { UserCardComponent } from '../../components/user-card/user-card.component'
 import { NotificationService } from '../../services/notification.service'
-import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-search-page',
@@ -18,7 +17,6 @@ export class SearchPageComponent implements OnInit {
   private githubService = inject(GitHubService)
   private cacheService = inject(CacheService)
   public notification = inject(NotificationService)
-  private router = inject(Router)
 
   users = signal<GitHubUser[]>([])
   loading = signal(false)
@@ -60,8 +58,6 @@ export class SearchPageComponent implements OnInit {
     this.users.set([item])
     this.inputValue.set(item.login)
     this.errorMessage.set(null)
-
-    this.router.navigate(['/repos', item.login])
   }
 
   clearSearch() {
