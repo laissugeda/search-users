@@ -44,7 +44,7 @@ Acesse: [http://localhost:4200](http://localhost:4200)
 
 ## 🧪 Suíte de Testes e Resultados
 
-Implementamos uma estratégia de testes para garantir a estabilidade das funcionalidades principais.
+Implementa uma estratégia de testes para garantir a estabilidade das funcionalidades principais.
 
 ### 1. Testes Unitários
 
